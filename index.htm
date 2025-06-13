@@ -947,59 +947,104 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
-  function startAutoScroll(carousel) {
-  carousel._scrollInterval = setInterval(() => {
-    carousel.scrollLeft += 1.5;
+  
+  document.querySelectorAll('.work-carousel').forEach(carousel => {
+  const cards = Array.from(carousel.children);
+  const scrollSpeed = 1.5;
+  let autoScrollInterval;
+  let isHovering = false;
+
+  // 🌀 Clone cards for infinite effect
+  cards.forEach(card => {
+    const clone = card.cloneNode(true);
+    clone.classList.add('clone');
+    carousel.appendChild(clone);
+  });
+
+  // 🧠 Auto-scroll logic
+  function startAutoScroll() {
+    stopAutoScroll(); // clear previous
+    autoScrollInterval = setInterval(() => {
+      if (!isHovering) {
+        carousel.scrollLeft += scrollSpeed;
+        // If scroll reaches end of originals, reset position
+        if (carousel.scrollLeft >= carousel.scrollWidth / 2) {
+          carousel.scrollLeft = 0;
+        }
+        highlightCenterCard();
+      }
+    }, 16); // ~60fps
+  }
+
+  function stopAutoScroll() {
+    clearInterval(autoScrollInterval);
+  }
+
+  // 🖱️ Smooth manual scroll (wheel momentum)
+  let wheelSpeed = 0;
+  let wheelActive = false;
+
+  carousel.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    wheelSpeed += e.deltaY * 0.4;
+    if (!wheelActive) manualScroll();
+  });
+
+  function manualScroll() {
+    wheelActive = true;
+    wheelSpeed *= 0.9;
+    carousel.scrollLeft += wheelSpeed;
+
     if (carousel.scrollLeft >= carousel.scrollWidth / 2) {
       carousel.scrollLeft = 0;
     }
-  }, 20);
-};
 
-function stopAutoScroll(carousel) {
-  clearInterval(carousel._scrollInterval);
-};
-
-function pauseAutoScroll(carousel, delay = 20) {
-  stopAutoScroll(carousel);
-  clearTimeout(carousel._resumeTimeout);
-  carousel._resumeTimeout = setTimeout(() => startAutoScroll(carousel), delay);
-};
-
-
-  // Carousel auto-scroll and manual scroll
-  carousels.forEach(carousel => {
-  // Duplicate content for infinite scroll
-  carousel.innerHTML += carousel.innerHTML;
-
-  // Start auto-scroll only for active carousels
-  if (carousel.classList.contains('active')) {
-    startAutoScroll(carousel);
+    if (Math.abs(wheelSpeed) > 0.5) {
+      requestAnimationFrame(manualScroll);
+    } else {
+      wheelActive = false;
+    }
+    highlightCenterCard();
   }
 
-  // Wheel scroll = horizontal + pause
-  carousel.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      e.preventDefault();
-      carousel.scrollLeft += e.deltaY;
-      pauseAutoScroll(carousel);
-    }
-  }, { passive: false });
+  // 🌟 Highlight center card logic
+  function highlightCenterCard() {
+    const center = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
+    carousel.querySelectorAll('.video-card').forEach(card => {
+      const cardCenter = card.getBoundingClientRect().left + card.offsetWidth / 2;
+      const distance = Math.abs(center - cardCenter);
+      card.classList.toggle('active', distance < card.offsetWidth / 2);
+    });
+  }
 
-  // Mouse enter / leave
-carousel.addEventListener('mouseenter', () => pauseAutoScroll(carousel, 500));  // 5s pause
-carousel.addEventListener('mouseleave', () => pauseAutoScroll(carousel, 500));
-
-
-  // Touch pause
-  ['touchstart', 'touchmove', 'scroll'].forEach(evt => {
-    carousel.addEventListener(evt, () => pauseAutoScroll(carousel), { passive: true });
+  // 🧲 Pause/resume on hover
+  carousel.addEventListener('mouseenter', () => {
+    isHovering = true;
+    stopAutoScroll();
+  });
+  carousel.addEventListener('mouseleave', () => {
+    isHovering = false;
+    startAutoScroll();
   });
 
-  ['touchend', 'mouseup'].forEach(evt => {
-    carousel.addEventListener(evt, () => pauseAutoScroll(carousel), { passive: true });
+  carousel.querySelectorAll('.video-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      isHovering = true;
+      stopAutoScroll();
+      carousel.querySelectorAll('.video-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    });
+
+    card.addEventListener('mouseleave', () => {
+      isHovering = false;
+      startAutoScroll();
+    });
   });
+
+  // Start
+  startAutoScroll();
 });
+
 
   // Modal logic
   const modal = document.getElementById('mediaModal');
