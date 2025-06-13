@@ -954,6 +954,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let autoScrollInterval;
   let isHovering = false;
   let isTouching = false;
+  let touchTimeout;
 
   // 🌀 Clone cards for infinite scroll
   cards.forEach(card => {
@@ -962,7 +963,7 @@ document.addEventListener('DOMContentLoaded', () => {
     carousel.appendChild(clone);
   });
 
-  // ✅ Highlight center video
+  // 🌟 Highlight center video
   function highlightCenterCard() {
     const center = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
     carousel.querySelectorAll('.video-card').forEach(card => {
@@ -972,7 +973,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 🧠 Auto scroll logic
+  // 🔁 Auto scroll with loop
   function startAutoScroll() {
     stopAutoScroll();
     autoScrollInterval = setInterval(() => {
@@ -990,7 +991,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearInterval(autoScrollInterval);
   }
 
-  // 🖱️ Wheel scroll (desktop)
+  // 🖱️ Manual wheel scroll with momentum
   let wheelSpeed = 0;
   let wheelActive = false;
 
@@ -1017,43 +1018,30 @@ document.addEventListener('DOMContentLoaded', () => {
     highlightCenterCard();
   }
 
-  // 👆 Touch scroll support (mobile)
-  let startX, scrollLeft;
-
-  carousel.addEventListener('touchstart', (e) => {
+  // 📱 Native Touch Scroll Pause/Resume
+  carousel.addEventListener('scroll', () => {
     isTouching = true;
     stopAutoScroll();
-    startX = e.touches[0].pageX;
-    scrollLeft = carousel.scrollLeft;
-  });
-
-  carousel.addEventListener('touchmove', (e) => {
-    const x = e.touches[0].pageX;
-    const walk = (startX - x) * 1.5; // scroll speed
-    carousel.scrollLeft = scrollLeft + walk;
-
-    if (carousel.scrollLeft >= carousel.scrollWidth / 2) {
-      carousel.scrollLeft = 0;
-    }
+    clearTimeout(touchTimeout);
+    touchTimeout = setTimeout(() => {
+      isTouching = false;
+      startAutoScroll();
+    }, 200);
     highlightCenterCard();
   });
 
-  carousel.addEventListener('touchend', () => {
-    isTouching = false;
-    startAutoScroll();
-  });
-
-  // 🖱️ Pause scroll on hover
+  // 🖱️ Hover pause/resume
   carousel.addEventListener('mouseenter', () => {
     isHovering = true;
     stopAutoScroll();
   });
+
   carousel.addEventListener('mouseleave', () => {
     isHovering = false;
     startAutoScroll();
   });
 
-  // ✨ Hover override for highlight
+  // ✨ Hover override highlight
   carousel.querySelectorAll('.video-card').forEach(card => {
     card.addEventListener('mouseenter', () => {
       isHovering = true;
@@ -1068,11 +1056,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Start everything
-  highlightCenterCard();
+  // 🚀 Start scroll + highlight
   startAutoScroll();
+  highlightCenterCard();
 });
-
 
   // Modal logic
   const modal = document.getElementById('mediaModal');
