@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Video Editing Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+ * { box-sizing: border-box; }
+body, html {
+  margin: 0; padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+  color: #4b2c83;
+  transition: color 1s ease;
+  position: relative;
+}
+
+#gradientLight, #gradientDark {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+
+#gradientLight {
+  background: linear-gradient(135deg, #ffd6e8, #e5d0ff, #d0f0ff);
+  opacity: 1;
+}
+
+#gradientDark {
+  background: linear-gradient(135deg, #57006d, #5d0079, #280f57);
+  opacity: 0;
+}
+
+#gradientLight, #gradientDark {
+  background-size: 300% 300%;
+  background-position: 0% 50%;
+  transition: opacity 0.6s ease;
+}
+
+
+@keyframes gradientWave {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body.transitioning #gradientDark,
+body.transitioning #gradientLight {
+  animation: gradientWave 2s ease forwards;
+}
+
+
+body.dark #gradientLight {
+  opacity: 0;
+}
+
+body.dark #gradientDark {
+  opacity: 1;
+}
+
+body {
+  transition: color 1s ease;
+}
+
+body.dark {
+  color: #e6d6ff;
+}
+
+nav, .subnav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 16px 24px;
+  border-radius: 16px;
+  margin: 0 auto;
+  width: calc(100% - 180px);
+  max-width: 960px;
+
+  background: var(--nav-bg);
+  background-size: 300% 300%;
+  background-position: 0% 50%;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+.subnav
+{ background: rgba(0, 0, 0, 0);}
+
+
+    nav {
+    box-shadow: 0 2px 8px rgba(169, 139, 255, 0.15);
+  position: sticky;
+  top: 16px;
+  z-index: 10;
+    }
+    nav button, .subnav button {
+    background: transparent;
+    border: none;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #a98bff;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
+    }
+    nav button.active, nav button:hover,
+    .subnav button.active, .subnav button:hover {
+    background-color: #a98bff;
+    color: white;
+    }
+
+body.transitioning nav,
+body.transitioning .subnav {
+  animation: gradientWave 2s ease forwards;
+}
+@media (max-width: 600px) {
+  nav, .subnav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  nav::-webkit-scrollbar,
+  .subnav::-webkit-scrollbar {
+    display: none; /* Chrome & Safari */
+  }
+
+  nav button, .subnav button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    white-space: nowrap;
+    flex-shrink: 0; /* Prevents buttons from shrinking */
+  }
+}
+
+
+
+
+
+   main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+}
+   section {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+    width: 100%;
+    }
+    section.active {
+    display: block;
+    }
+    @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+    }
+ .carousel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+  width: 100%;
+  min-height: 500px;
+}
+
+.work-carousel {
+  display: none;
+  flex-wrap: nowrap;
+  justify-content: center;       /* ✅ Center the video cards */
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0 8px;
+  max-width: 100%;
+  height: auto;
+
+  -ms-overflow-style: none;      /* IE/Edge */
+  scrollbar-width: none;         /* Firefox */
+}
+
+.work-carousel::-webkit-scrollbar {
+  display: none;                 /* Chrome/Safari */
+}
+
+.work-carousel.active {
+  display: flex;
+}
+
+/* VIDEO CARD */
+.video-card {
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: clamp(200px, 28vw, 320px);
+  aspect-ratio: 16 / 9;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background: transparent;
+  cursor: pointer;
+  transform: scale(0.7);  
+  box-shadow: 0 4px 15px rgba(124, 82, 255, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.video-card video,
+
+
+.video-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease;
+}
+
+.video-card video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1;                                       
+  pointer-events: none;
+}
+
+.video-card:hover video {
+  opacity: 1;
+}
+
+.video-card[data-category="static"]:hover img {
+  opacity: 1 !important;
+}
+
+
+.video-card .info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(124, 82, 255, 0.5);
+  color: white;
+  padding: 8px 10px 10px;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-card[data-category="reels"] .info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(124, 82, 255, 0.6);
+  padding: 8px 10px;
+  font-size: 0.75rem;
+  color: #fff;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  z-index: 2;
+}
+.video-card[data-category="reels"]:hover .info {
+  transform: translateY(0);
+  opacity: 1;
+}
+.video-card video {
+  z-index: 1;
+}
+
+
+
+.video-card .click-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-card .watch-button {
+ margin-top: 8px;
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+.video-card .watch-button:hover {
+  background: #5a3fb9;
+}
+
+
+/* Specific aspect ratios based on category */
+.video-card[data-category="reels"] {
+  aspect-ratio: 9 / 16;
+  width: clamp(180px, 18vw, 260px);
+}
+
+.video-card[data-category="static"] {
+  aspect-ratio: 3 / 4;
+  width: clamp(200px, 20vw, 300px);
+}
+
+.video-card[data-category="youtube"] {
+  aspect-ratio: 16 / 9;
+  width: clamp(240px, 28vw, 360px);
+}
+
+/* Hover Effects */
+.work-carousel:hover .video-card {
+  opacity: 0.6;
+}
+
+.video-card:hover {
+  transform: scale(0.9);
+  box-shadow: 0 0 32px rgba(160, 100, 255, 0.6), 0 0 48px rgba(160, 100, 255, 0.3);
+  opacity: 1 !important;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .work-carousel {
+    justify-content: flex-start; /* On small screens, allow scroll instead of centering */
+  }
+
+  .video-card {
+    width: 90vw;
+    flex: 0 0 auto;
+  }
+}
+
+
+   
+   .modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0,0,0,0.75);
+    justify-content: center;
+    align-items: center;
+   }
+   .modal-content {
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    padding: 10px;
+    max-width: 90%;
+    max-height: 80vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+   .modal-content video,
+    .modal-content img {
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 8px;
+   }
+   .close-button {
+    position: absolute;
+    top: -12px; right: -12px;
+    font-size: 28px;
+    color: white;
+    background: rgba(124, 82, 255, 0.8);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    line-height: 36px;
+    text-align: center;
+    cursor: pointer;
+   }
+:root {
+    --bg: linear-gradient(135deg, #ffd6e8, #e5d0ff, #d0f0ff);
+    --text: #5d3c91;
+    --accent: #a98bff;
+    --card-bg:linear-gradient(135deg, #ffd6e8, #e5d0ff, #d0f0ff);
+    --nav-bg: linear-gradient(135deg, #f798c1, #e5d0ff, #a7e2fe);
+  }
+  body.dark {
+    --bg: linear-gradient(135deg, #57006d, #5d0079, #280f57);
+    --text: #e6d6ff;
+    --accent: #c7a9ff;
+    --card-bg: #500075;
+    --nav-bg: linear-gradient(135deg, #280f57, #5d0079, #57006d);
+  }
+  body { background: var(--bg); color: var(--text); transition: background 0.4s, color 0.4s; }
+
+#contact {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    padding: 32px 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(124, 82, 255, 0.3);
+  }
+  #contact h2 {
+    color: #7c52ff;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  #contact form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  #contact input,
+  #contact textarea {
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+  #contact button {
+    background: #7c52ff;
+    border: none;
+    padding: 14px;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;  /* 👈 Makes the transform smooth */
+  }
+  #contact button:hover {
+    background-color: #5a3fb9;
+    transform: scale(1.1);
+  }
+
+  .contact-card {
+  background: var(--card-bg);
+  flex: 1 1 280px; /* flexible grow, shrink, base width */
+  min-width: 250px;
+  max-width: 100%;
+  padding: 24px;
+  border-radius: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(124, 82, 255, 0.2);
+  text-align: center;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;  /* 👈 Makes the transform smooth */
+}
+.contact-card h3 {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.contact-card p {
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.contact-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+
+@keyframes glowMove {
+  0% { box-shadow: 0 0 12px #a98bff, 0 0 24px rgba(124, 82, 255, 0.3); }
+  50% { box-shadow: 0 0 24px #7c52ff, 0 0 48px rgba(124, 82, 255, 0.6); }
+  100% { box-shadow: 0 0 12px #a98bff, 0 0 24px rgba(124, 82, 255, 0.3); }
+}
+
+.contact-card:hover {
+  animation: glowMove 2s infinite ease-in-out;
+  transform: translateY(-4px) ;
+  
+}
+
+@media (max-width: 600px) {
+  .contact-card {
+    flex: 1 1 90%;
+    max-width: 90%;
+  }
+}
+
+
+/* Introduction Section */
+  #intro {
+    text-align: center;
+    padding: 40px 16px;
+  }
+  #intro h1 {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+  #intro p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+
+#themeToggle {
+  background: transparent;
+  border: none;
+  font-size: 1 rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+#themeToggle:hover {
+  transform: scale(1.2);
+}
+
+
+#igContainer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#igButton {
+  width: clamp(44px, 6vw, 60px);  /* responsive size */
+  height: clamp(44px, 6vw, 60px);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+#igButton img {
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+#igButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.25);
+}
+
+#igLinks {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+#igLinks.active {
+  display: flex;
+}
+
+#igLinks a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+#igLinks a img {
+  width: clamp(30px, 6vw, 40px);
+  height: clamp(30px, 6vw, 40px);
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+#igLinks a img:hover {
+  transform: scale(1.1);
+}
+
+#igLinks .button-name {
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+  font-weight: 500;
+  color: var(--text);
+}
+
+
+  body {
+  /* Initial cursor: Play */
+  cursor: url('data:image/svg+xml;utf8,<svg fill="purple" xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M8 5v14l11-7z"/></svg>') 12 12, auto;
+}
+
+/* When pause mode is active */
+body.pause-cursor {
+  cursor: url('data:image/svg+xml;utf8,<svg fill="purple" xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M6 19h4V5H6zm8-14v14h4V5h-4z"/></svg>') 12 12, auto;
+}
+
+
+@media (max-width: 768px) {
+  nav, .subnav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  nav::-webkit-scrollbar,
+  .subnav::-webkit-scrollbar {
+    display: none; /* Chrome & Safari */
+  }
+
+  nav button, .subnav button {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .work-carousel {
+    height: auto;
+  }
+
+  .video-card {
+    width: 90vw;
+  }
+}
+.toggle-wrapper {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-slider {
+      position: relative;
+      width: 60px;
+      height: 30px;
+      background: linear-gradient(145deg, #e6e6e6, #ffffff);
+      border-radius: 30px;
+      box-shadow: inset 2px 2px 5px #ccc,
+                  inset -2px -2px 5px #fff;
+      cursor: pointer;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    body.dark .theme-slider {
+      background: linear-gradient(145deg, #1b1b1b, #121212);
+      box-shadow: inset 2px 2px 5px #0a0a0a,
+                  inset -2px -2px 5px #1f1f1f;
+    }
+
+    .slider-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: left 0.4s ease, background 0.4s ease, transform 0.4s ease;
+    }
+
+    body.dark .slider-thumb {
+      left: 33px;
+      background: #333;
+      transform: rotate(360deg);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 480px) {
+      :root {
+        --slider-width: 50px;
+        --slider-height: 26px;
+        --thumb-size: 20px;
+      }
+
+      .slider-thumb {
+        font-size: 14px;
+      }
+    }
+
+    #hoverPopup {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  z-index: 9999;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+}
+
+
+
+    </style>
+    </head>
+
+
+
+  <body>
+
+<div id="gradientLight"></div>
+<div id="gradientDark"></div>
+
+
+  <div id="mediaModal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <div id="modalMediaContainer"></div>
+  </div>
+</div>
+
+<div class="toggle-wrapper">
+    <div class="theme-slider" id="themeToggle">
+      <div class="slider-thumb" id="sliderThumb">🌕</div>
+    </div>
+  </div>
+<nav>
+  <button class="nav-btn active" data-target="intro">Introduction</button>
+  <button class="nav-btn" data-target="work">Work Samples</button>
+  <button class="nav-btn" data-target="contact">Contact</button>
+</nav>
+
+<!-- IG Button Section -->
+<div id="igContainer">
+  <button id="igButton" onclick="toggleIGLinks()">
+    <img src="assets/IGlogo.png" alt="Instagram" style="height: 24px; width: 24px;" />
+  </button>
+  <div id="igLinks">
+    <a href="https://www.instagram.com/filmy.spot__/profilecard/?igsh=dWFybXFvdzBqaWJy" target="_blank">
+      <img src="assets/IGlogo.png" alt="IG1" />
+      <span class="button-name">filmy.spot</span>
+    </a>
+    <a href="https://www.instagram.com/filmy.humour_?igsh=MThoZ3R3aTg1aTEz" target="_blank">
+      <img src="assets/IGlogo.png" alt="IG2" />
+      <span class="button-name">filmy.humour</span>
+    </a>
+    <a href="https://www.instagram.com/thepod_spot?igsh=bDVkaHp0ZTFxdWQ2" target="_blank">
+      <img src="assets/IGlogo.png" alt="IG3" />
+      <span class="button-name">thepod.spot</span>
+    </a>
+  </div>
+</div>
+
+<div id="hoverPopup"></div>
+
+
+
+
+
+
+<main>
+  <section id="intro" class="active">
+    <h1>Hi I'm a software engineer turned video editor</h1>
+    <p>I bring a unique blend of technical precision and creative flair to every project, 
+      <br> With 3 years of professional experience in video editing.
+
+            <br>As a freelancer, I’ve partnered with diverse clients to create dynamic promotional videos, compelling storytelling edits, and impactful social media content.
+                
+            <br> Let’s transform your ideas into captivating visual stories—together!</p>
+  </section>
+
+  <section id="work">
+    <div id="subtabNav" class="subnav" style="display: none;">
+      <button class="subtab active" data-category="reels">Reels</button>
+      <button class="subtab" data-category="static">Static</button>
+      <button class="subtab" data-category="youtube">YouTube</button>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel work-carousel" data-category="reels">
+        <div class="video-card" data-category="reels">
+          <img src="https://picsum.photos/id/1005/400/240" alt="Reel 1"loading="lazy">
+          <video src="videos/video7.mp4" muted loop preload="metadata"></video>
+          <div class="info">Reel Edit 1</div>
+        </div>
+        <div class="video-card" data-category="reels">
+          <img src="https://picsum.photos/id/1006/400/240" alt="Reel 2"loading="lazy">
+           <video src="videos/KLE_Society.mov" muted loop preload="metadata"></video>
+          <div class="info">Reel Edit 2</div>
+        </div>
+ <div class="video-card" data-category="reels">
+          <img alt="Reel 1"loading="lazy">
+           <video src="videos/Coffee_BP_March.mp4" muted loop preload="metadata"></video>
+          <div class="info">Reel Edit 3</div>
+        </div>
+        <div class="video-card" data-category="reels">
+          <img alt="Reel 2"loading="lazy">
+           <video src="videos/COmet.mp4" muted loop preload="metadata"></video>
+          <div class="info">Reel Edit 4</div>
+        </div>
+
+      </div>
+
+      <div class="carousel work-carousel" data-category="static">
+        <div class="video-card" data-category="static">
+          <img src="statics/Static1.png" alt="Static Edit 1"loading="lazy">
+          <div class="info">Static Showcase</div>
+        </div>
+        <div class="video-card" data-category="static">
+          <img src="statics/Static2.png" alt="Static Edit 2"loading="lazy">
+          <div class="info">Poster Showcase</div>
+        </div>
+        <div class="video-card" data-category="static">
+          <img src="statics/Static3.png" alt="Static Edit 3"loading="lazy">
+          
+          <div class="info">Poster Showcase</div>
+        </div>
+        <div class="video-card" data-category="static">
+          <img src="statics/Static4.png" alt="Static Edit 4"loading="lazy">
+          <div class="info">Poster Showcase</div>
+        </div>
+      </div>
+
+      <div class="carousel work-carousel" data-category="youtube">
+
+        <h1> Thiis Page is Under Maintenance will be live soon</h1>
+        <div class="video-card" data-category="youtube">
+          <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 1"loading="lazy">
+          <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
+          <div class="info">YT Edit 1</div>
+            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" class="watch-button">Watch Full Video</a>
+        </div>
+        <div class="video-card" data-category="youtube">
+          <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 1"loading="lazy">
+          <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
+          <div class="info">YT Edit 2</div>
+            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" class="watch-button">Watch Full Video</a>
+        </div><div class="video-card" data-category="youtube">
+          <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 1"loading="lazy">
+          <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
+          <div class="info">YT Edit 3</div>
+            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" class="watch-button">Watch Full Video</a>
+        </div>
+      
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+  <div class="contact-header" style="text-align: center; margin-bottom: 24px;">
+    <h2 style="color: var(--accent); font-size: 2rem;">Contact Me</h2>
+    <p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto; color: var(--text);">
+      I'd love to hear from you! Let's connect.
+    </p>
+  </div>
+  <div class="contact-options" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-top: 32px;">
+    <div class="contact-card" style="background: var(--card-bg); padding: 24px; border-radius: 16px; box-shadow: 0 4px 16px rgba(124, 82, 255, 0.2); text-align: center; max-width: 300px;">
+      <h3 style="color: var(--accent); margin-bottom: 8px;">Email</h3>
+      <p style="color: var(--text); margin-bottom: 16px;">Drop me an email for any inquiries.</p>
+      <a href="mailto:uthub.media@gmail.com" class="contact-button" style="display: inline-block; background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; transition: background 0.3s;">Email Me</a>
+    </div>
+    <div class="contact-card" style="background: var(--card-bg); padding: 24px; border-radius: 16px; box-shadow: 0 4px 16px rgba(124, 82, 255, 0.2); text-align: center; max-width: 300px;">
+      <h3 style="color: var(--accent); margin-bottom: 8px;">WhatsApp</h3>
+      <p style="color: var(--text); margin-bottom: 16px;">Message me on WhatsApp for quick responses.</p>
+      <a href="https://wa.me/+918928301254" class="contact-button" style="display: inline-block; background: var(--accent); color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; transition: background 0.3s;">Chat on WhatsApp</a>
+    </div>
+  </div>
+
+  
+</section>
+
+
+</main>
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const navButtons = document.querySelectorAll('nav button');
+  const sections = document.querySelectorAll('main section');
+  const subtabNav = document.getElementById('subtabNav');
+  const subtabs = document.querySelectorAll('.subtab');
+  const carousels = document.querySelectorAll('.work-carousel');
+
+  // Navigation handling
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      navButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const targetId = btn.getAttribute('data-target');
+      sections.forEach(section => {
+        section.classList.toggle('active', section.id === targetId);
+      });
+      subtabNav.style.display = targetId === 'work' ? 'flex' : 'none';
+      if (targetId === 'work') subtabs[0].click();
+      else carousels.forEach(c => c.classList.remove('active'));
+    });
+  });
+
+  // Subtab category switcher
+  subtabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      subtabs.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const category = btn.getAttribute('data-category');
+      carousels.forEach(c => {
+        c.classList.toggle('active', c.dataset.category === category);
+      });
+    });
+  });
+
+
+  function startAutoScroll(carousel) {
+  carousel._scrollInterval = setInterval(() => {
+    carousel.scrollLeft += 1.5;
+    if (carousel.scrollLeft >= carousel.scrollWidth / 2) {
+      carousel.scrollLeft = 0;
+    }
+  }, 20);
+};
+
+function stopAutoScroll(carousel) {
+  clearInterval(carousel._scrollInterval);
+};
+
+function pauseAutoScroll(carousel, delay = 20) {
+  stopAutoScroll(carousel);
+  clearTimeout(carousel._resumeTimeout);
+  carousel._resumeTimeout = setTimeout(() => startAutoScroll(carousel), delay);
+};
+
+
+  // Carousel auto-scroll and manual scroll
+  carousels.forEach(carousel => {
+  // Duplicate content for infinite scroll
+  carousel.innerHTML += carousel.innerHTML;
+
+  // Start auto-scroll only for active carousels
+  if (carousel.classList.contains('active')) {
+    startAutoScroll(carousel);
+  }
+
+  // Wheel scroll = horizontal + pause
+  carousel.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      e.preventDefault();
+      carousel.scrollLeft += e.deltaY;
+      pauseAutoScroll(carousel);
+    }
+  }, { passive: false });
+
+  // Mouse enter / leave
+carousel.addEventListener('mouseenter', () => pauseAutoScroll(carousel, 500));  // 5s pause
+carousel.addEventListener('mouseleave', () => pauseAutoScroll(carousel, 500));
+
+
+  // Touch pause
+  ['touchstart', 'touchmove', 'scroll'].forEach(evt => {
+    carousel.addEventListener(evt, () => pauseAutoScroll(carousel), { passive: true });
+  });
+
+  ['touchend', 'mouseup'].forEach(evt => {
+    carousel.addEventListener(evt, () => pauseAutoScroll(carousel), { passive: true });
+  });
+});
+
+  // Modal logic
+  const modal = document.getElementById('mediaModal');
+  const modalContent = document.getElementById('modalMediaContainer');
+  const closeBtn = document.querySelector('.close-button');
+
+  document.querySelectorAll('.video-card').forEach(card => {
+    const video = card.querySelector('video');
+    const img = card.querySelector('img');
+
+    // Setup video autoplay and overlay
+    if (video?.src) {
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      card.addEventListener('mouseenter', () => video.play());
+      card.addEventListener('mouseleave', () => video.pause());
+    }
+
+    let overlay = card.querySelector('.click-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.classList.add('click-overlay');
+      card.appendChild(overlay);
+    }
+
+    overlay.addEventListener('click', () => {
+      modalContent.innerHTML = '';
+      if (video?.src) {
+        const clone = document.createElement('video');
+        clone.src = video.src;
+        clone.controls = true;
+        clone.autoplay = true;
+        clone.loop = true;
+        modalContent.appendChild(clone);
+      } else if (img?.src) {
+        modalContent.appendChild(img.cloneNode(true));
+      }
+      modal.style.display = 'flex';
+    });
+  });
+
+  // Modal close handlers
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    modalContent.innerHTML = '';
+  });
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      modalContent.innerHTML = '';
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      modal.style.display = 'none';
+      modalContent.innerHTML = '';
+    }
+  });
+
+const themeToggle = document.getElementById('themeToggle');
+    const sliderThumb = document.getElementById('sliderThumb');
+
+    // Initialize theme
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+      sliderThumb.textContent = '🌑';
+    } else {
+      sliderThumb.textContent = '🌕';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      sliderThumb.textContent = isDark ? '🌑' : '🌕';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+  //video adapts ratio
+
+  document.querySelectorAll('.video-card video').forEach(video => {
+  video.addEventListener('loadedmetadata', () => {
+    const width = video.videoWidth;
+    const height = video.videoHeight;
+    const card = video.closest('.video-card');
+    if (width && height && card) {
+      const aspect = width / height;
+      card.style.aspectRatio = `${width} / ${height}`;
+      card.style.height = 'auto'; // Ensure it adjusts naturally
+    }
+  });
+});
+
+
+const popup = document.getElementById('hoverPopup');
+
+document.querySelectorAll('.contact-button').forEach(button => {
+  button.addEventListener('mouseenter', (e) => {
+    popup.textContent = button.href.startsWith('mailto:')
+      ? 'Send me an Email!'
+      : 'Start a WhatsApp chat!';
+    popup.style.opacity = '1';
+  });
+
+  button.addEventListener('mousemove', (e) => {
+    popup.style.left = e.pageX + 15 + 'px';
+    popup.style.top = e.pageY + 15 + 'px';
+  });
+
+  button.addEventListener('mouseleave', () => {
+    popup.style.opacity = '0';
+  });
+});
+
+window.addEventListener('resize', () => {
+  carousels.forEach(carousel => {
+    stopAutoScroll(carousel);
+    carousel.scrollLeft = 0;
+    startAutoScroll(carousel);
+  });
+});
+
+document.querySelectorAll('.video-card').forEach(card => {
+  const video = card.querySelector('video');
+  if (!video || card.dataset.category === "static") return;
+
+  video.preload = 'none';
+  video.addEventListener('mouseenter', () => {
+    if (video.readyState === 0) video.load();
+    video.play();
+  });
+  video.addEventListener('mouseleave', () => video.pause());
+});
+
+function generateThumbnail(videoEl, imgEl) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  videoEl.addEventListener('loadeddata', () => {
+    canvas.width = videoEl.videoWidth;
+    canvas.height = videoEl.videoHeight;
+
+    ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+    imgEl.src = canvas.toDataURL('image/jpeg');
+  });
+
+  // Load and pause quickly to grab first frame
+  videoEl.muted = true;
+  videoEl.playsInline = true;
+  videoEl.currentTime = 0.1;
+  videoEl.load();
+  videoEl.pause();
+}
+
+document.querySelectorAll('.video-card[data-category="reels"]').forEach(card => {
+  const video = card.querySelector('video');
+  const img = card.querySelector('img');
+
+  if (video && img) {
+    generateThumbnail(video, img);
+  }
+});
+
+
+
+
+  // IG Link toggle
+  window.toggleIGLinks = function () {
+    document.getElementById('igLinks').classList.toggle('active');
+  };
+});
+</script>
+
+
+    </body>
+</html>
