@@ -979,7 +979,7 @@ document.addEventListener('DOMContentLoaded', () => {
     stopAutoScroll();
     autoScrollInterval = setInterval(() => {
       if (!isHovering && !isTouching) {
-        carousel.scrollLeft += scrollSpeed;
+        carousel.scrollLeft += 2;
         if (carousel.scrollLeft >= carousel.scrollWidth / 2) {
           carousel.scrollLeft = 0;
         }
