@@ -810,32 +810,36 @@ body.pause-cursor {
 
     <div class="carousel-container">
       <div class="carousel work-carousel" data-category="reels">
-        <div class="video-card" data-category="reels">
-          <img src="https://picsum.photos/id/1005/400/240" alt="Reel 1"loading="lazy">
+         <div class="video-card" data-category="reels">
+          <img src="" alt="Faceless Reel"loading="lazy">
           <video src="videos/video7.mp4" muted loop preload="metadata"></video>
           <div class="info">Reel Edit 1</div>
         </div>
         <div class="video-card" data-category="reels">
-          <img src="https://picsum.photos/id/1006/400/240" alt="Reel 2"loading="lazy">
-           <video src="videos/KLE_Society.mov" muted loop preload="metadata"></video>
+          <img src="" alt="Trending Ad"loading="lazy">
+           <video src="videos/KLE_Society.mp4" muted loop preload="metadata"></video>
           <div class="info">Reel Edit 2</div>
         </div>
  <div class="video-card" data-category="reels">
-          <img alt="Reel 1"loading="lazy">
-           <video src="videos/Coffee_BP_March.mp4" muted loop preload="metadata"></video>
+          <img alt="Pdcast Edit"loading="lazy">
+           <video src="videos/video2.mp4" muted loop preload="metadata"></video>
           <div class="info">Reel Edit 3</div>
         </div>
         <div class="video-card" data-category="reels">
-          <img alt="Reel 2"loading="lazy">
+          <img alt="Faceless 2"loading="lazy">
            <video src="videos/COmet.mp4" muted loop preload="metadata"></video>
           <div class="info">Reel Edit 4</div>
         </div>
          <div class="video-card" data-category="reels">
-          <img alt="Reel 2"loading="lazy">
+          <img alt="Faceless 3"loading="lazy">
            <video src="videos/Luxury-TC.mp4" muted loop preload="metadata"></video>
           <div class="info">Reel Edit 5</div>
         </div>
-
+                 <div class="Influencer Reel" data-category="reels">
+          <img alt="Reel 2"loading="lazy">
+           <video src="videos/Coffee_BP_March.mp4" muted loop preload="metadata"></video>
+          <div class="info">Reel Edit 6</div>
+        </div>
       </div>
 
       <div class="carousel work-carousel" data-category="static">
@@ -1199,34 +1203,31 @@ document.querySelectorAll('.video-card').forEach(card => {
   video.addEventListener('mouseleave', () => video.pause());
 });
 
-function generateThumbnail(videoEl, imgEl) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
+// Thumbnail generator
+  function generateThumbnail(videoEl, imgEl) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
-  videoEl.addEventListener('loadeddata', () => {
-    canvas.width = videoEl.videoWidth;
-    canvas.height = videoEl.videoHeight;
+    videoEl.addEventListener('loadeddata', () => {
+      canvas.width = videoEl.videoWidth;
+      canvas.height = videoEl.videoHeight;
+      ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+      imgEl.src = canvas.toDataURL('image/jpeg');
+    });
 
-    ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
-    imgEl.src = canvas.toDataURL('image/jpeg');
+    videoEl.muted = true;
+    videoEl.playsInline = true;
+    videoEl.currentTime = 0.1;
+    videoEl.load();
+    videoEl.pause();
+  }
+
+  document.querySelectorAll('.video-card').forEach(card => {
+    const video = card.querySelector('video');
+    const img = card.querySelector('img');
+    if (video && img) generateThumbnail(video, img);
   });
 
-  // Load and pause quickly to grab first frame
-  videoEl.muted = true;
-  videoEl.playsInline = true;
-  videoEl.currentTime = 0.1;
-  videoEl.load();
-  videoEl.pause();
-}
-
-document.querySelectorAll('.video-card[data-category="reels"]').forEach(card => {
-  const video = card.querySelector('video');
-  const img = card.querySelector('img');
-
-  if (video && img) {
-    generateThumbnail(video, img);
-  }
-});
 
 
 
