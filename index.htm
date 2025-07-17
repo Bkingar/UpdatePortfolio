@@ -155,18 +155,26 @@ body.transitioning .subnav {
   margin: 0 auto;
   padding: 16px;
   box-sizing: border-box;
+  animation: slideUpFadeIn 0.8s ease-out forwards;
 }
    section {
     display: none;
-    animation: fadeIn 0.5s ease forwards;
     width: 100%;
     }
     section.active {
     display: block;
+    animation: slideUpFadeIn 0.7s ease-out forwards;
     }
-    @keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
+
+    @keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
     }
  .carousel-container {
   display: flex;
@@ -217,7 +225,7 @@ body.transitioning .subnav {
   cursor: pointer;
   transform: scale(0.7);  
   box-shadow: 0 4px 15px rgba(124, 82, 255, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
 }
 
 .video-card video,
@@ -303,36 +311,50 @@ body.transitioning .subnav {
   overflow: hidden;
 }
 
-.video-card .watch-button {
- margin-top: 8px;
+.yt-item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.watch-button {
+  margin-top: 12px;
   padding: 8px 16px;
   background: var(--accent);
   color: #fff;
   border-radius: 8px;
   font-weight: 600;
   text-decoration: none;
-  text-align: center;
   transition: background 0.3s ease;
+  z-index: 4; /* Make sure it's on top */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.video-card .watch-button:hover {
+.watch-button:hover {
   background: #5a3fb9;
 }
-
+.watch-button img {
+    height: 16px;
+    width: auto;
+}
 
 /* Specific aspect ratios based on category */
 .video-card[data-category="reels"] {
   aspect-ratio: 9 / 16;
-  width: clamp(180px, 18vw, 260px);
+  width: clamp(220px, 22vw, 300px);
 }
 
 .video-card[data-category="static"] {
   aspect-ratio: 3 / 4;
-  width: clamp(200px, 20vw, 300px);
+  width: clamp(250px, 25vw, 400px);
 }
 
 .video-card[data-category="youtube"] {
   aspect-ratio: 16 / 9;
-  width: clamp(240px, 28vw, 360px);
+ width: clamp(300px, 35vw, 450px);
 }
 
 /* Hover Effects */
@@ -746,7 +768,7 @@ body.pause-cursor {
 
   <div id="mediaModal" class="modal">
   <div class="modal-content">
-    <span class="close-button">&times;</span>
+    <span class="close-button">×</span>
     <div id="modalMediaContainer"></div>
   </div>
 </div>
@@ -762,7 +784,6 @@ body.pause-cursor {
   <button class="nav-btn" data-target="contact">Contact</button>
 </nav>
 
-<!-- IG Button Section -->
 <div id="igContainer">
   <button id="igButton" onclick="toggleIGLinks()">
     <img src="assets/IGlogo.png" alt="Instagram" style="height: 24px; width: 24px;" />
@@ -874,27 +895,47 @@ body.pause-cursor {
 
       <div class="carousel work-carousel" data-category="youtube">
 
-        <h1> Thiis Page is Under Maintenance will be live soon</h1>
+        <h1> This Page is Under Maintenance will be live soon</h1>
 
         <div class="carousel-spacer"></div>
         
-        <div class="video-card" data-category="youtube">
-          <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 1"loading="lazy">
-          <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
-          <div class="info">YT Edit 1</div>
-            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" class="watch-button">Watch Full Video</a>
+        <div class="yt-item-container">
+            <div class="video-card" data-category="youtube">
+              <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 1"loading="lazy">
+              <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
+              <div class="info">YT Edit 1</div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=your_video_id_1" target="_blank" class="watch-button">
+              <img src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.904 3.43 0 4.91 0 8.5v7c0 3.59 1.204 5.07 4.385 5.316 3.6.245 11.626.246 15.23 0C22.796 20.57 24 19.09 24 15.5v-7c0-3.59-1.204-5.07-4.385-5.316z" fill="%23FF0000"/><path d="M9.5 15.562V8.438L15.5 12l-6 3.562z" fill="%23FFFFFF"/></svg>' alt="YouTube Logo">
+              Watch on YT
+            </a>
         </div>
-        <div class="video-card" data-category="youtube">
-          <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 1"loading="lazy">
-          <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
-          <div class="info">YT Edit 2</div>
-            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" class="watch-button">Watch Full Video</a>
-        </div><div class="video-card" data-category="youtube">
-          <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 1"loading="lazy">
-          <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
-          <div class="info">YT Edit 3</div>
-            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" class="watch-button">Watch Full Video</a>
+
+        <div class="yt-item-container">
+            <div class="video-card" data-category="youtube">
+              <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 2"loading="lazy">
+              <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
+              <div class="info">YT Edit 2</div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=your_video_id_2" target="_blank" class="watch-button">
+              <img src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.904 3.43 0 4.91 0 8.5v7c0 3.59 1.204 5.07 4.385 5.316 3.6.245 11.626.246 15.23 0C22.796 20.57 24 19.09 24 15.5v-7c0-3.59-1.204-5.07-4.385-5.316z" fill="%23FF0000"/><path d="M9.5 15.562V8.438L15.5 12l-6 3.562z" fill="%23FFFFFF"/></svg>' alt="YouTube Logo">
+              Watch on YT
+            </a>
         </div>
+
+        <div class="yt-item-container">
+            <div class="video-card" data-category="youtube">
+              <img src="https://picsum.photos/id/1025/400/240" alt="YT Edit 3"loading="lazy">
+              <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/bee.webm" preload="metadata" muted loop preload="metadata"></video>
+              <div class="info">YT Edit 3</div>
+            </div>
+            <a href="https://www.youtube.com/watch?v=your_video_id_3" target="_blank" class="watch-button">
+              <img src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.904 3.43 0 4.91 0 8.5v7c0 3.59 1.204 5.07 4.385 5.316 3.6.245 11.626.246 15.23 0C22.796 20.57 24 19.09 24 15.5v-7c0-3.59-1.204-5.07-4.385-5.316z" fill="%23FF0000"/><path d="M9.5 15.562V8.438L15.5 12l-6 3.562z" fill="%23FFFFFF"/></svg>' alt="YouTube Logo">
+              Watch on YT
+            </a>
+        </div>
+
+        <div class="carousel-spacer"></div>
       
       </div>
     </div>
@@ -986,7 +1027,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ✨ Highlight center card
   function highlightCenterCard() {
     const center = carousel.getBoundingClientRect().left + carousel.clientWidth / 2;
-    carousel.querySelectorAll('.video-card').forEach(card => {
+    carousel.querySelectorAll('.video-card, .yt-item-container').forEach(card => {
       const cardCenter = card.getBoundingClientRect().left + card.offsetWidth / 2;
       const distance = Math.abs(center - cardCenter);
       card.classList.toggle('active', distance < card.offsetWidth / 2);
@@ -1062,11 +1103,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 🖱️ Hover highlight
-  carousel.querySelectorAll('.video-card').forEach(card => {
+  carousel.querySelectorAll('.video-card, .yt-item-container').forEach(card => {
     card.addEventListener('mouseenter', () => {
       isHovering = true;
       stopAutoScroll();
-      carousel.querySelectorAll('.video-card').forEach(c => c.classList.remove('active'));
+      carousel.querySelectorAll('.video-card, .yt-item-container').forEach(c => c.classList.remove('active'));
       card.classList.add('active');
     });
 
@@ -1107,7 +1148,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.appendChild(overlay);
     }
 
-    overlay.addEventListener('click', () => {
+    overlay.addEventListener('click', (e) => {
       modalContent.innerHTML = '';
       if (video?.src) {
         const clone = document.createElement('video');
