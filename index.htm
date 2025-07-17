@@ -123,16 +123,14 @@ body.transitioning .subnav {
 }
 @media (max-width: 600px) {
   nav, .subnav {
-    flex-wrap: wrap; /* Changed from nowrap to wrap */
-    overflow-x: hidden; /* Changed from auto to hidden */
+    flex-wrap: nowrap;
+    overflow-x: auto;
     justify-content: center;
-    gap: 8px; /* Reduced gap slightly for a better fit */
+    gap: 12px;
     padding: 8px 12px;
     border-radius: 12px;
     scrollbar-width: none; /* Firefox */
   }
-  /* ... other rules remain the same */
-}
 
   nav::-webkit-scrollbar,
   .subnav::-webkit-scrollbar {
