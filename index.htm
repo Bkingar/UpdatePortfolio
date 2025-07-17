@@ -685,17 +685,17 @@ body.pause-cursor {
       justify-content: center;
     }
 
-    .theme-slider {
-      position: relative;
-      width: 60px;
-      height: 30px;
-      background: linear-gradient(145deg, #e6e6e6, #ffffff);
-      border-radius: 30px;
-      box-shadow: inset 2px 2px 5px #ccc,
-                  inset -2px -2px 5px #fff;
-      cursor: pointer;
-      transition: background 0.4s ease, box-shadow 0.4s ease;
-    }
+  .theme-slider {
+  position: relative;
+  width: 44px; /* Reduced size */
+    height: 24px; /* Reduced size */
+    border-radius: 24px; /* Keeps it round */
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  box-shadow: inset 2px 2px 5px #ccc,
+              inset -2px -2px 5px #fff;
+  cursor: pointer;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
 
     body.dark .theme-slider {
       background: linear-gradient(145deg, #1b1b1b, #121212);
@@ -707,20 +707,20 @@ body.pause-cursor {
       position: absolute;
       top: 3px;
       left: 3px;
-      width: 24px;
-      height: 24px;
+      width: 18px; /* Reduced thumb size */
+      height: 18px; /* Reduced thumb size */
+      font-size: 12px; /* Smaller emoji */
      background: transparent;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       transition: left 0.4s ease, background 0.4s ease, transform 0.4s ease;
     }
 
     body.dark .slider-thumb {
-      left: 33px;
+      left: 23px; /* Adjusted position for dark mode */
       background: transparent;
       transform: rotate(360deg);
     }
